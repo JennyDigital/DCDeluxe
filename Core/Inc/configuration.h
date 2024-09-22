@@ -72,7 +72,7 @@
   #define NOTE3_VOL               1024U   // Initial volume of note 3
 #endif
 
-##ifdef CHIMESET_THREE
+#ifdef CHIMESET_THREE
   #define CUTOFF_POINT            24U
   #define DECAY_COUNTS            5U      // Sets the number of systick counts per decay step of the note(s)
   #define SECOND_NOTE_THRESHOLD   680U    // Threshold of bing note to trigger the bong note.

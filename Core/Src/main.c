@@ -65,10 +65,9 @@
             uint16_t        wv,
                             pitch_delay           = NOTE_BASE_CYCLE;
 
-            uint16_t        ph1                   = 2048,
-                            ph2                   = 2048,
-                            ph3                   = 2048,
-                            po                    = 3;
+            uint16_t        ph1                   = 0,
+                            ph2                   = 0,
+                            ph3                   = 0;
 
             uint16_t        note_dec_step         = DECAY_COUNTS;
 
@@ -76,9 +75,7 @@
                             amp2                  = 0,
                             amp3                  = 0;
 
-            uint8_t         mvol                  = 0,
-                            playing               = 1,
-                            seq_notes;
+            uint8_t         playing               = 1;
 
             uint8_t         option;
 
@@ -89,7 +86,9 @@ volatile    uint32_t        systick_counter       = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
+
 void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
 
 void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
@@ -129,6 +128,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+
   HAL_Delay( 100 );
   genSine();
 
@@ -232,6 +232,7 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+
 void HAL_IncTick(void)
 {
   uwTick += uwTickFreq;
@@ -261,8 +262,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       ph3 += PH3_STEP;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
-       wv =                   // Create composite waveform.
-            ( 
+       wv =                   // Create composite waveform, and yes, the DAC does have a signed
+            (                 // mode, but this code should port to other platforms too.
               ( wave[ ph1 ] * amp1 / 2048 ) 
                 +
               ( wave[ ph2 ] * amp2 / 2048 )
@@ -302,6 +303,7 @@ uint8_t readOption( void )
 
   return opt_read;
 }
+
 
 void playNotes( void )
 {
