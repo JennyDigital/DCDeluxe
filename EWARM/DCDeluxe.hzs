@@ -40,6 +40,7 @@
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Application;User;Core"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Drivers"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Drivers;CMSIS"/>
+  <ProjectSessionItem path="DCDeluxe;DCDeluxe;Drivers;STM32G4xx_HAL_Driver"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Source Files"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;System Files"/>
   <SourceCodeControlLogin password="F9BB6682F5D56822" user="JennyDigital &lt;jennifer.a.gunn@outlook.com>"/>
@@ -76,7 +77,7 @@
    <Watchpoint expression="amp1" name="amp1" radix="10" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="amp2" name="amp2" radix="10" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="amp3" name="amp3" radix="10" linenumber="0" filename="../EWARM"/>
-   <Watchpoint expression="htim3" name="htim3" radix="-1" linenumber="327" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="htim3" name="htim3" radix="-1" linenumber="369" filename="../Core/Src/main.c"/>
    <Watchpoint expression="option" name="option" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="ph1" name="ph1" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="ph2" name="ph2" radix="-1" linenumber="0" filename="../EWARM"/>
@@ -84,7 +85,7 @@
    <Watchpoint expression="playing" name="playing" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="systick_counter" name="systick_counter" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="trig_vol" name="trig_vol" radix="10" linenumber="0" filename="../EWARM"/>
-   <Watchpoint expression="wave" name="wave" radix="11" linenumber="299" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="wave" name="wave" radix="11" linenumber="331" filename="../Core/Src/main.c"/>
    <Watchpoint expression="wv" name="wv" radix="-1" linenumber="0" filename="../EWARM"/>
   </Watches>
  </Watch1>
@@ -98,22 +99,22 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="173" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="31" y="64" useTextEdit="1" path="../Core/Src/main.c" left="0" top="54" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="16" y="259" useTextEdit="1" path="../Core/Inc/stm32g4xx_hal_conf.h" left="0" top="228" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="44" y="29" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c" left="0" top="29" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="25" y="738" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c" left="0" top="707" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="7" y="536" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h" left="0" top="505" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="22" y="218" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h" left="0" top="206" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="74" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="93" y="48" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" selected="1" top="40" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="379" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c" left="0" top="349" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="10" y="292" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_cortex.h" left="0" top="261" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="18" y="29" useTextEdit="1" path="../Core/Inc/main.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="325" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="294" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="325" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="324" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="24" y="23" useTextEdit="1" path="../Core/Src/tim.c" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3944" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3915" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="32" y="54" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="25" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="1011" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h" left="0" top="982" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="13" y="208" useTextEdit="1" path="../Core/Src/stm32g4xx_it.c" left="0" top="179" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="143" useTextEdit="1" path="../Core/Src/stm32g4xx_it.c" left="0" top="109" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="985" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac.c" left="0" top="963" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/gpio.c" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="53" y="37" useTextEdit="1" path="../Core/Src/system_stm32g4xx.c" left="0" top="37" codecName="Default"/>

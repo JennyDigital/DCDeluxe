@@ -62,8 +62,7 @@
 
 /* USER CODE BEGIN PV */
 
-            uint16_t        wv,
-                            pitch_delay           = NOTE_BASE_CYCLE;
+            uint16_t        wv;
 
             uint16_t        ph1                   = 0,
                             ph2                   = 0,
@@ -91,6 +90,7 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 
+void    HAL_IncTick                   ( void );
 void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
 void    StartTimer                    ( void );
 void    genSine                       ( void );
@@ -233,6 +233,13 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 
+/** Updates the uwTick variable and updates the systick_counter if not already 0.
+  *
+  * Overrides the '__weak' version in the HAL.
+  *
+  * @param none
+  * @retval none
+  */
 void HAL_IncTick(void)
 {
   uwTick += uwTickFreq;
@@ -245,6 +252,14 @@ void HAL_IncTick(void)
 }
 
 
+/** Callback servicing timer interrupts. Overrides the HAL '__weak' version.
+  *
+  * Only handles interrupts from timer 3 at present, but addind support
+  * for other timers is trivial.
+  *
+  * @param *htim
+  * @retval none
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* Prevent unused argument(s) compilation warning */
@@ -276,6 +291,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 
 
+/** Starts both the timer, and interrupts from it.
+  *
+  * @param: none
+  * @retval: none
+  */
 void StartTimer( void )
 {
   HAL_TIM_Base_Start_IT( &htim3 );
@@ -283,15 +303,27 @@ void StartTimer( void )
 }
 
 
+/** Generates a sine table.
+  *
+  * @param: none
+  * @retval: none
+  *
+  * Note: It may well be better to put this into FLASH going forward.
+  */
 void genSine( void )
 {
-  for( int i=0; i<WAVETABLE_SZ; i++)
+  for( int i=0; i<WAVETABLE_SZ; i++ )
   {
     wave[ i ] = ( ( sin( i * 2 * pi / WAVETABLE_SZ ) + 1 ) ) * CHOSEN_RES / 4 - 1024;
   }
 }
 
 
+/** Reads the option switches
+  *
+  * @param none
+  * @retval option value 0..15.
+  */
 uint8_t readOption( void )
 {
   uint8_t opt_read = 0;
@@ -305,6 +337,12 @@ uint8_t readOption( void )
 }
 
 
+/** Engine to play the notes.  This is where the main focus of enhancement will
+  * come from going forwards.
+  *
+  * @param none
+  * @retval none
+  */
 void playNotes( void )
 {
   // RampToCenter();
@@ -320,6 +358,10 @@ void playNotes( void )
   {
    if( !systick_counter )
     {
+      // Reset counter
+      //
+      systick_counter = note_dec_step;
+
       // Handle volume decay
       //
       if( amp1 ) amp1 -= DROP_RATE;
@@ -339,8 +381,8 @@ void playNotes( void )
         case 1:       // Two notes.
           if( amp1 <= SECOND_NOTE_THRESHOLD && note2_not_triggered ) 
           {
-            amp2 = NOTE2_VOL;
-            ph2 = 0;
+            amp2                = NOTE2_VOL;
+            ph2                 = 0;
             note2_not_triggered = 0;
           }
           break;
@@ -348,31 +390,30 @@ void playNotes( void )
         case 2:       // Three notes.
           if( amp1 <= SECOND_NOTE_THRESHOLD && note2_not_triggered ) 
           {
-            amp2 = NOTE2_VOL;
-            ph2 = 0;
+            amp2                = NOTE2_VOL;
+            ph2                 = 0;
             note2_not_triggered = 0;
           }
 
           if( amp2 <= THIRD_NOTE_THRESHOLD && note3_not_triggered && !note2_not_triggered ) 
           {
-            amp3 = NOTE3_VOL;
-            ph3 = 0;
+            amp3                = NOTE3_VOL;
+            ph3                 = 0;
             note3_not_triggered = 0;
           }
           break;
 
         case 3:       // Chord.
           break;
+
+        default:      // Capture rogue values and re-assign as necessary
+          option = 2;
+          break;
       }
 
       // Stop when all notes done.
       //
       if( !( amp1 | amp2 | amp3 ) ) playing = 0;
-
-      // Reset counter
-      //
-      systick_counter = note_dec_step;
-
     }     // End of if( !systick_counter )
   }       // End of while( playing )
 }
