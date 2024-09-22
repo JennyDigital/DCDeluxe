@@ -1,0 +1,9 @@
+*.plist
+*.d
+*.o
+*.s
+*.elf
+*.ld
+*.ind
+*.map
+*cppcheck*

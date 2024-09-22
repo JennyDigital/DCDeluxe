@@ -1,0 +1,9 @@
+Order of copper layers.
+=======================
+
+cmp is the top copper layer.
+L2 is the upper inner layer.
+L15 is he lower inner layer.
+sol is the bottom layer.
+
+Also, the PCB is designed with two prepegs separated by one core, thus placing cmp and L2 very close to each other.  This is inentional.
