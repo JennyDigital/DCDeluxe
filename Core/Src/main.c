@@ -114,23 +114,6 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-  //HAL_FLASH_Unlock();
-  //HAL_FLASH_OB_Unlock()
-  //FLASH_OBProgramInitTypeDef pOBInitStruct = {0};
-
-  //pOBInitStruct.OptionType = OPTIONBYTE_RDP;
-
-  //pOBInitStruct.RDPLevel    = OB_RDP_LEVEL1;
-
-  //if( HAL_GPIO_ReadPin( UNLOCK_GPIO_Port,  UNLOCK_Pin )
-  //{
-
-  //}
-  //pOBInitStruct.RDPLevel    = OB_RDP_LEVEL1;
-
-  //HAL_FLASHEx_OBProgram( &pOBInitStruct );
-  //HAL_FLASH_OB_Launch();
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -170,10 +153,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-      // Get option selection.
+    // Get option selection.
     //
-    option = readOption();
-    //option = 2;
+    // Note that unused option switches are presently masked out to prevent failure.
+    //
+    option = 3 & readOption();
 
     // Set up note
     //
