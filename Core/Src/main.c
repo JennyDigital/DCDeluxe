@@ -62,7 +62,7 @@
 
 /* USER CODE BEGIN PV */
 
-            uint16_t        wv;
+            uint16_t        wv                    = 2048;
 
             uint16_t        ph1                   = 0,
                             ph2                   = 0,
@@ -96,6 +96,7 @@ void    StartTimer                    ( void );
 void    genSine                       ( void );
 uint8_t readOption                    ( void );
 void    playNotes                     ( void );
+void    shiftToDACCenter              ( void );
 
 /* USER CODE END PFP */
 
@@ -129,9 +130,6 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
-  HAL_Delay( 100 );
-  genSine();
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -139,10 +137,13 @@ int main(void)
   MX_DAC1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  //wv = DAC1->DHR12R1;
+  //shiftToDACCenter();
+  HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_MspInit( &hdac1 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
-  HAL_Delay( 200 );
+  genSine();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -171,6 +172,8 @@ int main(void)
     }
 
     playNotes();
+    shiftToDACCenter();
+    ph1 = ph2 = ph3 = 0;
 
 #ifndef  TEST_CYCLING_SET
     // Wait for button to be pressed and released
@@ -179,7 +182,6 @@ int main(void)
     HAL_Delay( 50 );
     while( HAL_GPIO_ReadPin( TRIGGER_GPIO_Port, TRIGGER_Pin ) );
 #endif
-
   }
   /* USER CODE END 3 */
 }
@@ -264,8 +266,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(htim);
-
+  HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, wv );
   if( htim !=&htim3 ) return;
+
    if( playing )
     {
       ph1 += PH1_STEP;        // Increment phase accumulator for note 1
@@ -277,16 +280,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       ph3 += PH3_STEP;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
-       wv =                   // Create composite waveform, and yes, the DAC does have a signed
-            (                 // mode, but this code should port to other platforms too.
-              ( wave[ ph1 ] * amp1 / 2048 ) 
-                +
-              ( wave[ ph2 ] * amp2 / 2048 )
-                +
-              ( wave[ ph3 ] * amp3 / 2048 )
-            ) / 1.57 + 2048;
-
-      HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, wv );
+      wv =                    // Create composite waveform, and yes, the DAC does have a signed
+          (                 // mode, but this code should port to other platforms too.
+            ( wave[ ph1 ] * amp1 / 2048 ) 
+              +
+            ( wave[ ph2 ] * amp2 / 2048 )
+              +
+            ( wave[ ph3 ] * amp3 / 2048 )
+          ) / 1.8 + 2048;
     }
 }
 
@@ -417,6 +418,30 @@ void playNotes( void )
     }     // End of if( !systick_counter )
   }       // End of while( playing )
 }
+
+
+/** Softly move to centere point gracefully.  This avoids pops.
+  *
+  * @param none
+  * @retval none
+  *
+  */
+  void shiftToDACCenter( void )
+  {
+    char dir = 0;
+
+    if( wv < 2048 ) dir = 1;
+    if( wv > 2048 ) dir = -1;
+    if( wv == 2048 ) return;
+
+    for( ; wv != 2048; )
+    {
+      if( dir == 1 ) wv++;
+      else wv--;
+
+      DAC1->DHR12R1 = wv;
+    }
+  }
 
 
 /* USER CODE END 4 */
