@@ -78,6 +78,12 @@
 
             uint8_t         option;
 
+            float           mvol_divider;
+
+            uint8_t         ph1_step              = PH1_STEP_DEFAULT,
+                            ph2_step              = PH2_STEP_DEFAULT,
+                            ph3_step              = PH3_STEP_DEFAULT;
+
 volatile    uint32_t        systick_counter       = 0;
 
             int16_t         wave[ WAVETABLE_SZ ]  = {0};
@@ -156,33 +162,49 @@ int main(void)
 
     // Get option selection.
     //
-    // Note that unused option switches are presently masked out to prevent failure.
-    //
-    option = 3 & readOption();
+    option = readOption();
 
     // Set up note
     //
-    if( option != 3 )         // One note
+    ph1_step = ( option & 4 ) ? PH1_STEP_DEFAULT : PH3_STEP_DEFAULT;
+    ph2_step = PH2_STEP_DEFAULT;
+    ph3_step = ( option & 4 ) ? PH3_STEP_DEFAULT : PH1_STEP_DEFAULT;
+
+    if( ( option & 3 ) != 3 )         // Sequential notes or one note, not paying attention to the attributes bits.
     {
+      mvol_divider = 1.8;
       amp1 = NOTE1_VOL;
     }
     else                      // Chord
     {
       amp1 = amp2 = amp3 = NOTE1_VOL;
+      mvol_divider = 2.37;
     }
 
+    // Do the thing.
+    //
     playNotes();
+
+    // Reset the DAC
+    //
     shiftToDACCenter();
-    ph1 = ph2 = ph3 = 0;
 
 #ifndef  TEST_CYCLING_SET
     // Wait for button to be pressed and released
     //
+    // The system is also reset, to prevent minor soft errors from accumulating.  This is after all left on
+    // for possibly years at a time.  Note also that we don't use that solution in test cycling or debug mode.
+    //
     while( !HAL_GPIO_ReadPin( TRIGGER_GPIO_Port, TRIGGER_Pin ) );
-    HAL_Delay( 50 );
-    while( HAL_GPIO_ReadPin( TRIGGER_GPIO_Port, TRIGGER_Pin ) );
+#ifndef DEBUG_MODE
+    HAL_NVIC_SystemReset();
 #endif
+#endif
+
+    // Reset the phase accumulators, only necessary in DEBUG_MODE
+    ph1 = ph2 = ph3 = 0;
   }
+
   /* USER CODE END 3 */
 }
 
@@ -271,13 +293,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
    if( playing )
     {
-      ph1 += PH1_STEP;        // Increment phase accumulator for note 1
+      ph1 += ph1_step;        // Increment phase accumulator for note 1
       ph1 %= WAVETABLE_SZ;
 
-      ph2 += PH2_STEP;        // Increment phase accumulator for note 2
+      ph2 += ph2_step;        // Increment phase accumulator for note 2
       ph2 %= WAVETABLE_SZ;
 
-      ph3 += PH3_STEP;        // Increment phase accumulator for note 3
+      ph3 += ph3_step;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
       wv =                    // Create composite waveform, and yes, the DAC does have a signed
@@ -287,7 +309,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             ( wave[ ph2 ] * amp2 / 2048 )
               +
             ( wave[ ph3 ] * amp3 / 2048 )
-          ) / 1.8 + 2048;
+          ) / mvol_divider + 2048;
     }
 }
 
