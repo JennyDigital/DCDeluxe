@@ -101,13 +101,13 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="206" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="140" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="368" useTextEdit="1" path="../Core/Src/main.c" left="0" top="355" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="16" y="259" useTextEdit="1" path="../Core/Inc/stm32g4xx_hal_conf.h" left="0" top="228" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="44" y="29" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c" left="0" top="29" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="25" y="738" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c" left="0" top="707" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="7" y="536" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h" left="0" top="505" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="22" y="218" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h" left="0" top="206" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="31" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="4" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="35" y="46" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" selected="1" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="379" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c" left="0" top="349" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="10" y="292" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_cortex.h" left="0" top="261" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="18" y="29" useTextEdit="1" path="../Core/Inc/main.h" left="0" top="0" codecName="Default"/>

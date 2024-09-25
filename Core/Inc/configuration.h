@@ -38,26 +38,26 @@
   * but you know what you like more than me.
   */
 
-//#define CHIMESET_ONE
+#define CHIMESET_ONE
 //#define CHIMESET_TWO
-#define CHIMESET_THREE
+//#define CHIMESET_THREE
 
 #ifdef CHIMESET_ONE
-  #define CUTOFF_POINT            24U
-  #define DECAY_COUNTS            5U      // Sets the number of systick counts per decay step of the note(s)
+  #define CUTOFF_POINT            10U
+  #define DECAY_COUNTS            7U      // Sets the number of systick counts per decay step of the note(s)
   #define SECOND_NOTE_THRESHOLD   680U    // Threshold of bing note to trigger the bong note.
   #define THIRD_NOTE_THRESHOLD    680U    // Threshold of bong note to trigger the dong note.
   #define PH1_STEP_DEFAULT        48      // Offset for phase accumulator 1 (Bing note).
   #define PH2_STEP_DEFAULT        32      // Offset for phase accumulator 2 (Bong note).
   #define PH3_STEP_DEFAULT        24      // Offset for phase accumulator 3 (Dong note).
-  #define DROP_RATE               2U      // Rate at which to drop off notes.
+  #define DROP_RATE               3U      // Rate at which to drop off notes.
   #define NOTE1_VOL               1024U   // Initial volume of note 1
   #define NOTE2_VOL               1024U   // Initial volume of note 2
   #define NOTE3_VOL               1024U   // Initial volume of note 3
 #endif
 
 #ifdef CHIMESET_TWO
-  #define CUTOFF_POINT            24U
+  #define CUTOFF_POINT            10U
   #define DECAY_COUNTS            3U      // Sets the number of systick counts per decay step of the note(s)
   #define SECOND_NOTE_THRESHOLD   710U    // Threshold of bing note to trigger the bong note.
   #define THIRD_NOTE_THRESHOLD    710U    // Threshold of bong note to trigger the dong note.
@@ -71,7 +71,7 @@
 #endif
 
 #ifdef CHIMESET_THREE
-  #define CUTOFF_POINT            40U
+  #define CUTOFF_POINT            10U
   #define DECAY_COUNTS            5U      // Sets the number of systick counts per decay step of the note(s)
   #define SECOND_NOTE_THRESHOLD   800U    // Threshold of bing note to trigger the bong note.
   #define THIRD_NOTE_THRESHOLD    800U    // Threshold of bong note to trigger the dong note.
