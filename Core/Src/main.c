@@ -142,9 +142,9 @@ int main(void)
   MX_GPIO_Init();
   MX_DAC1_Init();
   MX_TIM3_Init();
+
   /* USER CODE BEGIN 2 */
-  //wv = DAC1->DHR12R1;
-  //shiftToDACCenter();
+
   HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_MspInit( &hdac1 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
@@ -202,6 +202,7 @@ int main(void)
 #endif
 
     // Reset the phase accumulators, only necessary in DEBUG_MODE
+    //
     ph1 = ph2 = ph3 = 0;
   }
 
@@ -368,7 +369,6 @@ uint8_t readOption( void )
   */
 void playNotes( void )
 {
-  // RampToCenter();
   StartTimer();
 
   uint8_t note2_not_triggered = 1,
