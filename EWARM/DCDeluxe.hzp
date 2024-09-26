@@ -78,7 +78,16 @@
       </folder>
       <folder Name="User">
         <folder Name="Core">
-          <file file_name="../Core/Inc/configuration.h" />
+          <folder Name="header files">
+            <file file_name="../Core/Inc/configuration.h" />
+            <file file_name="../Core/Inc/dac.h" />
+            <file file_name="../Core/Inc/gpio.h" />
+            <file file_name="../Core/Inc/main.h" />
+            <file file_name="../Core/Inc/stm32g4xx_hal_conf.h" />
+            <file file_name="../Core/Inc/stm32g4xx_it.h" />
+            <file file_name="../Core/Inc/tim.h" />
+            <file file_name="../Core/Inc/wave.h" />
+          </folder>
           <file file_name="./../Core/Src/dac.c" />
           <file file_name="./../Core/Src/gpio.c" />
           <file file_name="./../Core/Src/main.c" />
@@ -116,10 +125,10 @@
       <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
     </folder>
     <folder Name="System Files">
-      <file file_name="$(TargetsDir)/STM32/$(DeviceVectorsFile)" />
       <file file_name="$(TargetsDir)/STM32/STM32_Startup.s">
         <configuration Name="Common" c_preprocessor_definitions="" />
       </file>
+      <file file_name="$(TargetsDir)/STM32/$(DeviceVectorsFile)" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
   </project>

@@ -44,11 +44,6 @@
 /* USER CODE BEGIN PD */
 
 #define WAVETABLE_SZ  4096U
-#define RES_8B        255U
-#define RES_12B       4096U
-#define pi            3.1415926
-
-#define CHOSEN_RES    RES_12B
 
 /* USER CODE END PD */
 
