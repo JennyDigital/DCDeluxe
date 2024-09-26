@@ -44,11 +44,6 @@
 /* USER CODE BEGIN PD */
 
 #define WAVETABLE_SZ  4096U
-#define RES_8B        255U
-#define RES_12B       4096U
-#define pi            3.1415926
-
-#define CHOSEN_RES    RES_12B
 
 /* USER CODE END PD */
 
@@ -97,7 +92,8 @@
 
 // one wants to know when an event should happen, and I don't want a full OS just for this
 // therefore there is a simple counter.
-volatile    uint32_t        systick_counter       = 0;
+volatile    uint32_t        systick_counter       = 0,
+                            event_delay           = 0;
 
 // The wave is now stored as a const int16_t in wave.h, included here.
 #include "wave.h"
@@ -110,12 +106,13 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 
-void    HAL_IncTick                   ( void );
-void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
-void    StartTimer                    ( void );
-uint8_t readOption                    ( void );
-void    playNotes                     ( void );
-void    shiftToDACCenter              ( void );
+__weak  void    eventTimoutCallback           ( void );
+        void    HAL_IncTick                   ( void );
+        void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
+        void    StartTimer                    ( void );
+        uint8_t readOption                    ( void );
+        void    playNotes                     ( void );
+        void    shiftToDACCenter              ( void );
 
 /* USER CODE END PFP */
 
@@ -270,6 +267,14 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+/** Event delay callback function.
+  *
+  */
+__weak void eventTimoutCallback( void )
+{
+
+}
+
 
 /** Updates the uwTick variable and updates the systick_counter if not already 0.
   *
@@ -287,6 +292,14 @@ void HAL_IncTick(void)
     systick_counter--;
   }
 
+  if( event_delay )
+  {
+    event_delay--;
+    if( !event_delay )
+    {
+      eventTimoutCallback();
+    }
+  }
 }
 
 
