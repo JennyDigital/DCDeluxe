@@ -32,6 +32,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "configuration.h"
+#include "notes.h"
 
 /* USER CODE END Includes */
 
@@ -43,7 +44,8 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define WAVETABLE_SZ  4096U
+#define WAVETABLE_SZ  16384U
+#define SAMPLE_FREQ   ( 150000000 / 15 / 120 )
 
 /* USER CODE END PD */
 
@@ -60,15 +62,15 @@
             uint16_t        wv                    = 2048;
 
 // The instantaneous phase of each wave.  This is an example of phase accumulators.
-            uint16_t        ph1                   = 0,
+volatile    uint16_t        ph1                   = 0,
                             ph2                   = 0,
                             ph3                   = 0;
 
 // Decay rate in steps for each wave's volume.  Higher values mean faster decay.
-            uint16_t        note_dec_step         = DECAY_COUNTS;
+volatile    uint16_t        note_dec_step         = DECAY_COUNTS;
 
 // Each channel has an associated volume, this is where the current volume is stored.
-            int16_t         amp1                  = 0,
+volatile    int16_t         amp1                  = 0,
                             amp2                  = 0,
                             amp3                  = 0;
 
@@ -86,14 +88,23 @@
 // there are limited samples available and too big  step won't sound nice.
 //
 // Very high frequecies are possible!
-            uint8_t         ph1_step              = PH1_STEP_DEFAULT,
+            uint16_t        ph1_step              = PH1_STEP_DEFAULT,
                             ph2_step              = PH2_STEP_DEFAULT,
                             ph3_step              = PH3_STEP_DEFAULT;
 
+// per-channel drop rates for volume (presets applied)
+//
+            uint8_t         droprate_ch1          = DROP_RATE,
+                            droprate_ch2          = DROP_RATE,
+                            droprate_ch3          = DROP_RATE;
+
 // one wants to know when an event should happen, and I don't want a full OS just for this
-// therefore there is a simple counter.
+// therefore there is are simple counters and flag.
 volatile    uint32_t        systick_counter       = 0,
                             event_delay           = 0;
+volatile    uint8_t         systick_timeout       = 0;
+
+
 
 // The wave is now stored as a const int16_t in wave.h, included here.
 #include "wave.h"
@@ -113,6 +124,11 @@ __weak  void    eventTimoutCallback           ( void );
         uint8_t readOption                    ( void );
         void    playNotes                     ( void );
         void    shiftToDACCenter              ( void );
+        void    playNote                      ( uint8_t ch,
+                                                float freq_hz,
+                                                uint8_t dec_rate,
+                                                int16_t ch_vol
+                                              ); 
 
 /* USER CODE END PFP */
 
@@ -158,6 +174,9 @@ int main(void)
   HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_MspInit( &hdac1 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
+  #ifdef DEBUG_MODE
+      debug_printf( "%lu.\n", SAMPLE_FREQ );
+  #endif
 
   /* USER CODE END 2 */
 
@@ -173,28 +192,51 @@ int main(void)
     //
     option = readOption();
 
-    // Set up note
-    //
-    ph1_step = ( option & 4 ) ? PH1_STEP_DEFAULT : PH3_STEP_DEFAULT;
-    ph2_step = PH2_STEP_DEFAULT;
-    ph3_step = ( option & 4 ) ? PH3_STEP_DEFAULT : PH1_STEP_DEFAULT;
+    StartTimer();
 
-    if( ( option & 3 ) != 3 )         // Sequential notes or one note, not paying attention to the attributes bits.
+    switch( option )
     {
-      mvol_divider = 1.8;
-      amp1 = NOTE1_VOL;
-    }
-    else                      // Chord
-    {
-      amp1 = amp2 = amp3 = NOTE1_VOL;
-      mvol_divider = 2.37;
+    case 0:                 // Single note
+      mvol_divider = 1.9;
+
+      playNote( 1,  nE5 , 2, 1024 );
+      break;
+
+    case 1:                 // Two notes descending
+      mvol_divider = 1.9;
+
+      playNote( 1, nE5, 2, 1024 );
+      HAL_Delay( 680 );
+      playNote( 2, nC5, 2, 1024 );
+      break;
+
+    case 2:                 // Tri-tone descending
+      mvol_divider = 1.9;
+
+      playNote( 1, nE5, 2, 1024 );
+      HAL_Delay( 680 );
+      playNote( 2, nC5, 2, 1024 );
+      HAL_Delay( 680 );
+      playNote( 3, nG4, 2, 1024 );
+      break;
+
+    case 3:                 // Tri-tone ascending
+      mvol_divider = 1.9;
+
+      playNote( 1, nG4, 2, 1024 );
+      HAL_Delay( 680 );
+      playNote( 2, nC5, 2, 1024 );
+      HAL_Delay( 680 );
+      playNote( 3, nE5, 2, 1024 );
+      break;
     }
 
-    // Do the thing.
+    // Wait for end.
     //
-    playNotes();
+    while( amp1 + amp2 + amp3 );
+    playing = 0;
 
-    // Reset the DAC
+    // Reset DAC
     //
     shiftToDACCenter();
 
@@ -287,18 +329,26 @@ void HAL_IncTick(void)
 {
   uwTick += uwTickFreq;
 
-  if( systick_counter )
+  if( systick_counter ) systick_counter--;
+  if( event_delay ) event_delay--;
+  
+  if( !systick_counter )
   {
-    systick_counter--;
-  }
+    // Handle volume decay
+    //
+    if( amp1 ) amp1 -= droprate_ch1;
+    if( amp2 ) amp2 -= droprate_ch2;
+    if( amp3 ) amp3 -= droprate_ch3;
+    if( amp1 <= CUTOFF_POINT )  amp1 = 0;
+    if( amp2 <= CUTOFF_POINT )  amp2 = 0;
+    if( amp3 <= CUTOFF_POINT )  amp3 = 0;
+    systick_timeout = 1;
+    systick_counter = note_dec_step; 
+  }  
 
-  if( event_delay )
+  if( !event_delay )
   {
-    event_delay--;
-    if( !event_delay )
-    {
       eventTimoutCallback();
-    }
   }
 }
 
@@ -371,87 +421,6 @@ uint8_t readOption( void )
 }
 
 
-/** Engine to play the notes.  This is where the main focus of enhancement will
-  * come from going forwards.
-  *
-  * @param none
-  * @retval none
-  */
-void playNotes( void )
-{
-  StartTimer();
-
-  uint8_t note2_not_triggered = 1,
-          note3_not_triggered = 1;
-  
-  amp1 = NOTE1_VOL;
-  playing = 1;
-
-  while( playing )
-  {
-   if( !systick_counter )
-    {
-      // Reset counter
-      //
-      systick_counter = note_dec_step;
-
-      // Handle volume decay
-      //
-      if( amp1 ) amp1 -= DROP_RATE;
-      if( amp2 ) amp2 -= DROP_RATE;
-      if( amp3 ) amp3 -= DROP_RATE;
-      if( amp1 <= CUTOFF_POINT )  amp1 = 0;
-      if( amp2 <= CUTOFF_POINT )  amp2 = 0;
-      if( amp3 <= CUTOFF_POINT )  amp3 = 0;
-
-      // Manage triggering of extra notes.
-      //
-      switch( option )
-      {
-        case 0:       // One note only
-          break;
-
-        case 1:       // Two notes.
-          if( amp1 <= SECOND_NOTE_THRESHOLD && note2_not_triggered ) 
-          {
-            amp2                = NOTE2_VOL;
-            ph2                 = 0;
-            note2_not_triggered = 0;
-          }
-          break;
-
-        case 2:       // Three notes.
-          if( amp1 <= SECOND_NOTE_THRESHOLD && note2_not_triggered ) 
-          {
-            amp2                = NOTE2_VOL;
-            ph2                 = 0;
-            note2_not_triggered = 0;
-          }
-
-          if( amp2 <= THIRD_NOTE_THRESHOLD && note3_not_triggered && !note2_not_triggered ) 
-          {
-            amp3                = NOTE3_VOL;
-            ph3                 = 0;
-            note3_not_triggered = 0;
-          }
-          break;
-
-        case 3:       // Chord.
-          break;
-
-        default:      // Capture rogue values and re-assign as necessary
-          option = 2;
-          break;
-      }
-
-      // Stop when all notes done.
-      //
-      if( !( amp1 | amp2 | amp3 ) ) playing = 0;
-    }     // End of if( !systick_counter ).
-  }       // End of while( playing ).
-}         // End of playNotes function.
-
-
 /** Softly move to centere point gracefully.  This avoids pops.
   *
   * @param none
@@ -476,6 +445,37 @@ void playNotes( void )
   }
 
 
+void    playNote( uint8_t ch,
+                  float freq_hz,
+                  uint8_t dec_rate,
+                  int16_t ch_vol
+                )
+{
+  uint16_t ph_step;
+
+  ph_step = freq_hz / ( SAMPLE_FREQ / WAVETABLE_SZ );
+
+  switch( ch )
+  {
+    case 1:   // Channel 1
+      ph1_step = ph_step;
+      droprate_ch1 = dec_rate;
+      amp1 = ch_vol;
+    break;
+
+    case 2:   // Channel 1
+      ph2_step = ph_step;
+      droprate_ch2 = dec_rate;
+      amp2 = ch_vol;
+    break;
+
+    case 3:   // Channel 1
+      ph3_step = ph_step;
+      droprate_ch3 = dec_rate;
+      amp3 = ch_vol;
+    break;
+  }
+} 
 /* USER CODE END 4 */
 
 /**

@@ -83,6 +83,7 @@
             <file file_name="../Core/Inc/dac.h" />
             <file file_name="../Core/Inc/gpio.h" />
             <file file_name="../Core/Inc/main.h" />
+            <file file_name="../Core/Inc/notes.h" />
             <file file_name="../Core/Inc/stm32g4xx_hal_conf.h" />
             <file file_name="../Core/Inc/stm32g4xx_it.h" />
             <file file_name="../Core/Inc/tim.h" />
