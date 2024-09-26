@@ -31,7 +31,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <math.h>
 #include "configuration.h"
 
 /* USER CODE END Includes */
@@ -100,9 +99,8 @@
 // therefore there is a simple counter.
 volatile    uint32_t        systick_counter       = 0;
 
-// This is where the wave-table is stored.  We are using a lot of RAM at present by doing it this
-// way and will be moving the wave to FLASH in the future.
-            int16_t         wave[ WAVETABLE_SZ ]  = {0};
+// The wave is now stored as a const int16_t in wave.h, included here.
+#include "wave.h"
 
 /* USER CODE END PV */
 
@@ -115,7 +113,6 @@ void SystemClock_Config(void);
 void    HAL_IncTick                   ( void );
 void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
 void    StartTimer                    ( void );
-void    genSine                       ( void );
 uint8_t readOption                    ( void );
 void    playNotes                     ( void );
 void    shiftToDACCenter              ( void );
@@ -164,7 +161,6 @@ int main(void)
   HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_MspInit( &hdac1 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
-  genSine();
 
   /* USER CODE END 2 */
 
@@ -341,22 +337,6 @@ void StartTimer( void )
 {
   HAL_TIM_Base_Start_IT( &htim3 );
   HAL_TIM_Base_Start( &htim3 );
-}
-
-
-/** Generates a sine table.
-  *
-  * @param: none
-  * @retval: none
-  *
-  * Note: It may well be better to put this into FLASH going forward.
-  */
-void genSine( void )
-{
-  for( int i=0; i<WAVETABLE_SZ; i++ )
-  {
-    wave[ i ] = ( ( sin( i * 2 * pi / WAVETABLE_SZ ) + 1 ) ) * CHOSEN_RES / 4 - 1024;
-  }
 }
 
 
