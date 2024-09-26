@@ -48,13 +48,14 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin PBPin */
-  GPIO_InitStruct.Pin = UNLOCK_Pin|TRIGGER_Pin|OPT4_Pin|OPT3_Pin
-                          |OPT2_Pin|OPT1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  /**Configure GPIO pins : on port B
+    *
+    */
+  GPIO_InitStruct.Pin     = TRIGGER_Pin | OPT4_Pin | OPT3_Pin
+                          | OPT2_Pin | OPT1_Pin;
+  GPIO_InitStruct.Mode    = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull    = GPIO_PULLDOWN;
+  HAL_GPIO_Init( GPIOB, &GPIO_InitStruct );
 
 }
 

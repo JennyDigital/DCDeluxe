@@ -62,30 +62,46 @@
 
 /* USER CODE BEGIN PV */
 
+// The instantaneous wave state.
             uint16_t        wv                    = 2048;
 
+// The instantaneous phase of each wave.  This is an example of phase accumulators.
             uint16_t        ph1                   = 0,
                             ph2                   = 0,
                             ph3                   = 0;
 
+// Decay rate in steps for each wave's volume.  Higher values mean faster decay.
             uint16_t        note_dec_step         = DECAY_COUNTS;
 
+// Each channel has an associated volume, this is where the current volume is stored.
             int16_t         amp1                  = 0,
                             amp2                  = 0,
                             amp3                  = 0;
 
+// Engine is either playing or has completed.  This is the flag.
             uint8_t         playing               = 1;
 
+// DIP switch option value variable.
             uint8_t         option;
 
+// Master volume divider.  Required to avoid clipping. Amplifier overdrive IS allowed,
+// ..but you may not like how it sounds.
             float           mvol_divider;
 
+// phase accumulator steps.  Higher means higher frequencies.  It should be noted that
+// there are limited samples available and too big  step won't sound nice.
+//
+// Very high frequecies are possible!
             uint8_t         ph1_step              = PH1_STEP_DEFAULT,
                             ph2_step              = PH2_STEP_DEFAULT,
                             ph3_step              = PH3_STEP_DEFAULT;
 
+// one wants to know when an event should happen, and I don't want a full OS just for this
+// therefore there is a simple counter.
 volatile    uint32_t        systick_counter       = 0;
 
+// This is where the wave-table is stored.  We are using a lot of RAM at present by doing it this
+// way and will be moving the wave to FLASH in the future.
             int16_t         wave[ WAVETABLE_SZ ]  = {0};
 
 /* USER CODE END PV */
@@ -220,36 +236,37 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1);
+  HAL_PWREx_ControlVoltageScaling( PWR_REGULATOR_VOLTAGE_SCALE1 );
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV4;
-  RCC_OscInitStruct.PLL.PLLN = 75;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
-  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  RCC_OscInitStruct.OscillatorType        = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState              = RCC_HSI_ON;
+  RCC_OscInitStruct.HSICalibrationValue   = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.PLL.PLLState          = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource         = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM              = RCC_PLLM_DIV4;
+  RCC_OscInitStruct.PLL.PLLN              = 75;
+  RCC_OscInitStruct.PLL.PLLP              = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ              = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR              = RCC_PLLR_DIV2;
+
+  if( HAL_RCC_OscConfig( &RCC_OscInitStruct ) != HAL_OK )
   {
     Error_Handler();
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.ClockType       = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                    | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource    = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider   = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider  = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider  = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_4) != HAL_OK)
+  if( HAL_RCC_ClockConfig( &RCC_ClkInitStruct, FLASH_LATENCY_4 ) != HAL_OK )
   {
     Error_Handler();
   }
@@ -437,9 +454,9 @@ void playNotes( void )
       // Stop when all notes done.
       //
       if( !( amp1 | amp2 | amp3 ) ) playing = 0;
-    }     // End of if( !systick_counter )
-  }       // End of while( playing )
-}
+    }     // End of if( !systick_counter ).
+  }       // End of while( playing ).
+}         // End of playNotes function.
 
 
 /** Softly move to centere point gracefully.  This avoids pops.
@@ -461,7 +478,7 @@ void playNotes( void )
       if( dir == 1 ) wv++;
       else wv--;
 
-      DAC1->DHR12R1 = wv;
+      HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, wv );
     }
   }
 
@@ -472,12 +489,12 @@ void playNotes( void )
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-void Error_Handler(void)
+void Error_Handler( void )
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
-  while (1)
+  while( 1 )
   {
   }
   /* USER CODE END Error_Handler_Debug */
