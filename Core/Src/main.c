@@ -316,13 +316,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       ph3 += ph3_step;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
-      wv =                    // Create composite waveform, and yes, the DAC does have a signed
-          (                 // mode, but this code should port to other platforms too.
+      wv =  ( int16_t )       // Create composite waveform, and yes, the DAC does have a signed
+          (                   // mode, but this code should port to other platforms too.
             ( wave[ ph1 ] * amp1 / 2048 ) 
               +
-            ( wave[ ph2 ] * amp2 / 2048 )
+            ( wave[ ph2 ] *  amp2 / 2048 )
               +
-            ( wave[ ph3 ] * amp3 / 2048 )
+            ( wave[ ph3 ] *  amp3 / 2048 )
           ) / mvol_divider + 2048;
     }
 }
