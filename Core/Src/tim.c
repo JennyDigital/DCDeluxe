@@ -21,7 +21,7 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-#define SAMPLE_DELAY 195-1
+#define SAMPLE_DELAY 120-1
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim3;
