@@ -105,10 +105,14 @@ volatile    uint32_t        systick_counter       = 0,
                             event_delay           = 0;
 volatile    uint8_t         systick_timeout       = 0;
 
-
-
-// The wave is now stored as a const int16_t in wave.h, included here.
+// The wave array is stored as a const int16_t in wave.h, included here.
 #include "wave.h"
+
+// Debug variable(s)
+#ifdef PEAK_CAPTURE
+            uint16_t        peak = 2048;
+#endif
+
 
 /* USER CODE END PV */
 
@@ -142,6 +146,10 @@ __weak  void      eventTimoutCallback           ( void );
 /**
   * @brief  The application entry point.
   * @retval int
+  *
+  * Note: there are variables you might like to experiment with like mvol_divider
+  * given the great variety of speakers and this boards ability to overdrive the
+  * amplifier (at least for now).
   */
 int main(void)
 {
@@ -196,13 +204,13 @@ int main(void)
     switch( option )
     {
     case 0:                 // Single note
-      mvol_divider = 1.9;
+      mvol_divider = 2.25;
 
       playNote( 1,  nE5 , 2, 1024 );
       break;
 
     case 1:                 // Two notes descending
-      mvol_divider = 1.9;
+      mvol_divider = 2.25;
 
       playNote( 1, nE5, 2, 1024 );
       HAL_Delay( 680 );
@@ -210,7 +218,7 @@ int main(void)
       break;
 
     case 2:                 // Tri-tone descending
-      mvol_divider = 1.9;
+      mvol_divider = 2.25;
 
       playNote( 1, nE5, 2, 1024 );
       HAL_Delay( 680 );
@@ -220,7 +228,7 @@ int main(void)
       break;
 
     case 3:                 // Tri-tone ascending
-      mvol_divider = 1.9;
+      mvol_divider = 2.25;
 
       playNote( 1, nG4, 2, 1024 );
       HAL_Delay( 680 );
@@ -230,9 +238,9 @@ int main(void)
       break;
 
     case 4:                 // Musical score 1
-      mvol_divider = 2.2;
+      mvol_divider = 2.5;
 
-      playScore( &scale4 );
+      playScore( (float *) scale4 );
       break;
     }
     // Wait for end.
@@ -383,14 +391,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       ph3 += ph3_step;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
-      wv = (int16_t)       // Create composite waveform, and yes, the DAC does have a signed
-          (                 // mode, but this code should port to other platforms too.
-            ( wave[ ph1 ] * amp1 / 2048 ) 
+// Below is a complex mess of casting to attempt to improve the audio.
+// ...this may be misguided!
+      wv = (int16_t)          // Create composite waveform, and yes, the DAC does have a signed
+          (                   // mode, but this code should port to other platforms too.
+            ( (int32_t) wave[ ph1 ] * amp1 / 1024 ) 
               +
-            ( wave[ ph2 ] * amp2 / 2048 )
+            ( (int32_t) wave[ ph2 ] * amp2 / 1024 )
               +
-            ( wave[ ph3 ] * amp3 / 2048 )
-          ) / mvol_divider + 2048;
+            ( (int32_t) wave[ ph3 ] * amp3  / 1024 )
+          ) / 4 / mvol_divider + 2048;
+
+#ifdef PEAK_CAPTURE
+      if( wv > peak ) peak = wv;
+#endif
     }
 }
 
@@ -474,18 +488,21 @@ void    playNote( uint8_t ch,
   {
     case 1:   // Channel 1
       ph1_step = ph_step;
+      ph1 = 0;
       droprate_ch1 = dec_rate;
       amp1 = ch_vol;
     break;
 
     case 2:   // Channel 2
       ph2_step = ph_step;
+      ph2 = 0;
       droprate_ch2 = dec_rate;
       amp2 = ch_vol;
     break;
 
     case 3:   // Channel 3
       ph3_step = ph_step;
+      ph3=0;
       droprate_ch3 = dec_rate;
       amp3 = ch_vol;
     break;

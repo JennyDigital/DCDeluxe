@@ -36,6 +36,7 @@
 // Select as necessary.
 //
 #define PRINT_SCORE
+#define PEAK_CAPTURE
 #endif
 
 /** The three pre-defined chime-sets.

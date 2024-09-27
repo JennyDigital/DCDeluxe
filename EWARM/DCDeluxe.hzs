@@ -1,7 +1,9 @@
 <!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
- <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
+ </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBuffer>
   <FrameBufferWindow width="1194332224" keepAspectRatio="0" zoomToFitWindow="0" showGrid="0" addressSpace="" format="0" height="32610" autoEvaluate="0" scaleFactor="1" refreshPeriod="0" name="DCDeluxe_DCDeluxe" addressText="" accessByDisplayWidth="0"/>
@@ -68,13 +70,14 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Never">
-   <Watchpoint expression="mvol_divider" name="mvol_divider" radix="-1" linenumber="233" filename="../Core/Src/main.c"/>
-   <Watchpoint expression="amp1" name="amp1" radix="10" linenumber="0" filename=""/>
-   <Watchpoint expression="wv" name="wv" radix="10" linenumber="386" filename="../Core/Src/main.c"/>
-   <Watchpoint expression="amp2" name="amp2" radix="-1" linenumber="0" filename=""/>
-   <Watchpoint expression="amp3" name="amp3" radix="-1" linenumber="0" filename=""/>
-   <Watchpoint expression="playing" name="playing" radix="-1" linenumber="0" filename=""/>
-   <Watchpoint expression="option" name="option" radix="-1" linenumber="0" filename=""/>
+   <Watchpoint expression="mvol_divider" name="mvol_divider" radix="-1" linenumber="241" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="amp1" name="amp1" radix="10" linenumber="0" filename="../EWARM"/>
+   <Watchpoint expression="wv" name="wv" radix="10" linenumber="396" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="amp2" name="amp2" radix="-1" linenumber="0" filename="../EWARM"/>
+   <Watchpoint expression="amp3" name="amp3" radix="-1" linenumber="0" filename="../EWARM"/>
+   <Watchpoint expression="playing" name="playing" radix="-1" linenumber="0" filename="../EWARM"/>
+   <Watchpoint expression="option" name="option" radix="-1" linenumber="0" filename="../EWARM"/>
+   <Watchpoint expression="peak" name="peak" radix="10" linenumber="0" filename=""/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -87,12 +90,15 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="367" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="368" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="151" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="135" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/tim.c" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="32" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3916" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3902" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="334" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="321" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="20" y="38" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3847" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3834" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="335" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="322" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Inc/scores.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Inc/wave.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="388" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c" left="0" top="366" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c" autoConnectTarget="CrossConnect" buildConfiguration="THUMB Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="266111"/>
+ <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c" autoConnectTarget="CrossConnect" buildConfiguration="THUMB Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="266111"/>
 </session>
