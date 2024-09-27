@@ -3,7 +3,9 @@
  <Bookmarks>
   <BookmarkItem objectName="" line="27" column="4" path="/home/jennifer/Dropbox/DevFiles/stm32/Project/nucleoblink2/main.c" number="1" extra="RCC_PLLConfig( RCC_PLLSource_HSI, 8, 200, 4, 4, 4 );" color="5"/>
  </Bookmarks>
- <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
+ </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBuffer>
   <FrameBufferWindow width="2147483647" keepAspectRatio="0" zoomToFitWindow="0" showGrid="0" addressSpace="" format="0" height="2147483647" autoEvaluate="0" scaleFactor="1" refreshPeriod="0" name="DCDeluxe_DCDeluxe" addressText="" accessByDisplayWidth="0"/>
@@ -71,8 +73,22 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Twice a Second">
-   <Watchpoint expression="ph1" name="ph1" radix="-1" linenumber="65" filename="../Core/Src/main.c"/>
-   <Watchpoint expression="ph1_step" name="ph1_step" radix="-1" linenumber="91" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="ph1" name="ph1" radix="-1" linenumber="66" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="ph1_step" name="ph1_step" radix="-1" linenumber="92" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="sc_to_play" name="sc_to_play" radix="-1" linenumber="520" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="old_smokey" name="old_smokey" radix="-1" linenumber="235" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="score_pointer" name="score_pointer" radix="16" linenumber="523" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="amp1" name="amp1" radix="10" linenumber="0" filename=""/>
+   <Watchpoint expression="amp2" name="amp2" radix="10" linenumber="0" filename=""/>
+   <Watchpoint expression="amp3" name="amp3" radix="10" linenumber="0" filename=""/>
+   <Watchpoint expression="mvol_divider" name="mvol_divider" radix="-1" linenumber="233" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="dec_rate" name="dec_rate" radix="10" linenumber="482" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="ch_to_play" name="ch_to_play" radix="16" linenumber="514" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="dec_rt" name="dec_rt" radix="10" linenumber="514" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="droprate" name="droprate" radix="10" linenumber="520" filename="../Core/Src/main.c"/>
+   <Watchpoint expression="playing" name="playing" radix="-1" linenumber="0" filename=""/>
+   <Watchpoint expression="wv" name="wv" radix="10" linenumber="0" filename=""/>
+   <Watchpoint expression="beat" name="beat" radix="10" linenumber="0" filename=""/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -85,28 +101,29 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="144" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="187" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="485" useTextEdit="1" path="../Core/Src/main.c" left="0" top="466" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="16" y="259" useTextEdit="1" path="../Core/Inc/stm32g4xx_hal_conf.h" left="0" top="237" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="44" y="29" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c" left="0" top="29" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="25" y="738" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c" left="0" top="716" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="7" y="536" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h" left="0" top="514" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="22" y="218" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_flash.h" left="0" top="206" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="32" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="27" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="18" y="34" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="27" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="379" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c" left="0" top="360" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="10" y="292" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_cortex.h" left="0" top="272" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="18" y="29" useTextEdit="1" path="../Core/Inc/main.h" left="0" top="29" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="410" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="410" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c" left="0" top="399" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="24" y="23" useTextEdit="1" path="../Core/Src/tim.c" left="0" top="12" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3944" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3934" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="125" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="107" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3886" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3875" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="125" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="84" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="2" y="320" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h" left="0" top="302" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="191" useTextEdit="1" path="../Core/Src/stm32g4xx_it.c" left="0" top="180" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="208" useTextEdit="1" path="../Core/Src/stm32g4xx_it.c" left="0" top="193" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="45" y="966" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dac.c" left="0" top="954" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="51" useTextEdit="1" path="../Core/Src/gpio.c" left="0" top="35" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="51" useTextEdit="1" path="../Core/Src/gpio.c" left="0" top="23" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="53" y="37" useTextEdit="1" path="../Core/Src/system_stm32g4xx.c" left="0" top="37" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="2" y="95" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_dac.h" left="0" top="79" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="20" y="3" useTextEdit="1" path="../Core/Inc/wave.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="73" useTextEdit="1" path="../Core/Inc/notes.h" left="0" top="50" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="73" useTextEdit="1" path="../Core/Inc/notes.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="29" useTextEdit="1" path="../Core/Inc/scores.h" left="0" selected="1" top="11" codecName="Default"/>
  </Files>
- <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c;*.h" autoConnectTarget="CrossConnect" buildConfiguration="THUMB Release" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/jennifer/repos/DoorChimeDeluxe/Core/Inc" debugSearchPath="" autoConnectCapabilities="266111"/>
+ <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c;*.h" autoConnectTarget="CrossConnect" buildConfiguration="THUMB Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/home/jennifer/repos/DoorChimeDeluxe/Core/Inc" debugSearchPath="" autoConnectCapabilities="266111"/>
 </session>

@@ -70,4 +70,7 @@
 #define nA6     1760
 #define nB6     1975.53
 
+// Special control notes
+//
+#define END_PLAY    0
 #endif

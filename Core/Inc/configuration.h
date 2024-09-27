@@ -30,7 +30,13 @@
   *
   */
 //#define TEST_CYCLING_SET
-//#define DEBUG_MODE
+#define DEBUG_MODE
+
+#ifdef  DEBUG_MODE
+// Select as necessary.
+//
+#define PRINT_SCORE
+#endif
 
 /** The three pre-defined chime-sets.
   *

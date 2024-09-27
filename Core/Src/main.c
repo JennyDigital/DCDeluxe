@@ -33,6 +33,7 @@
 /* USER CODE BEGIN Includes */
 #include "configuration.h"
 #include "notes.h"
+#include "scores.h"
 
 /* USER CODE END Includes */
 
@@ -45,7 +46,7 @@
 /* USER CODE BEGIN PD */
 
 #define WAVETABLE_SZ  16384U
-#define SAMPLE_FREQ   ( 150000000 / 15 / 120 )
+#define SAMPLE_FREQ   ( 150000000.0 / 15.0 / 120.0 )
 
 /* USER CODE END PD */
 
@@ -117,18 +118,19 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 
-__weak  void    eventTimoutCallback           ( void );
-        void    HAL_IncTick                   ( void );
-        void    HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
-        void    StartTimer                    ( void );
-        uint8_t readOption                    ( void );
-        void    playNotes                     ( void );
-        void    shiftToDACCenter              ( void );
-        void    playNote                      ( uint8_t ch,
-                                                float freq_hz,
-                                                uint8_t dec_rate,
-                                                int16_t ch_vol
-                                              ); 
+__weak  void      eventTimoutCallback           ( void );
+        void      HAL_IncTick                   ( void );
+        void      HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef *htim );
+        void      StartTimer                    ( void );
+        uint8_t   readOption                    ( void );
+        void      shiftToDACCenter              ( void );
+        void      playNote                      ( uint8_t ch,
+                                                  float   freq_hz,
+                                                  uint8_t dec_rate,
+                                                  uint16_t ch_vol
+                                                );
+        uint16_t  bpm_to_ms                     ( uint16_t bpm );
+        void      playScore                     ( float * sc_to_play );
 
 /* USER CODE END PFP */
 
@@ -174,9 +176,6 @@ int main(void)
   HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
   HAL_DAC_MspInit( &hdac1 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
-  #ifdef DEBUG_MODE
-      debug_printf( "%lu.\n", SAMPLE_FREQ );
-  #endif
 
   /* USER CODE END 2 */
 
@@ -229,8 +228,13 @@ int main(void)
       HAL_Delay( 680 );
       playNote( 3, nE5, 2, 1024 );
       break;
-    }
 
+    case 4:                 // Musical score 1
+      mvol_divider = 2.2;
+
+      playScore( &scale4 );
+      break;
+    }
     // Wait for end.
     //
     while( amp1 + amp2 + amp3 );
@@ -444,17 +448,27 @@ uint8_t readOption( void )
     }
   }
 
-
+/** Play a note
+  *
+  * @param ch:        the channel to play.
+  * @param freq_hz:   The frequency of the note.
+  * @param dec_rate:  Decay rate of the note.
+  * @param ch_volume: Volume of note at initial strike.
+  * @retval none.
+  */
 void    playNote( uint8_t ch,
                   float freq_hz,
                   uint8_t dec_rate,
-                  int16_t ch_vol
+                  uint16_t ch_vol
                 )
 {
   uint16_t ph_step;
 
   ph_step = freq_hz / ( SAMPLE_FREQ / WAVETABLE_SZ );
 
+#ifdef PRINT_SCORE
+  debug_printf( "%u, %f, %u\n\r", ch, freq_hz, ch_vol );
+#endif
   switch( ch )
   {
     case 1:   // Channel 1
@@ -463,19 +477,52 @@ void    playNote( uint8_t ch,
       amp1 = ch_vol;
     break;
 
-    case 2:   // Channel 1
+    case 2:   // Channel 2
       ph2_step = ph_step;
       droprate_ch2 = dec_rate;
       amp2 = ch_vol;
     break;
 
-    case 3:   // Channel 1
+    case 3:   // Channel 3
       ph3_step = ph_step;
       droprate_ch3 = dec_rate;
       amp3 = ch_vol;
     break;
   }
-} 
+}
+
+/** BPM to ms conversion function
+  *
+  * @param  bpm
+  * @retval ms
+  */
+uint16_t bpm_to_ms( uint16_t bpm )
+{
+  #define ONE_MINUTE 60000U     // 1 minute in ms
+
+  return ONE_MINUTE / bpm;
+}
+
+void playScore( float *sc_to_play )
+{
+  uint16_t  score_pointer = 1;
+  int beat = bpm_to_ms( sc_to_play[ 1 ] );  // notes per bar = 4
+  uint8_t droprate = sc_to_play[2];
+
+  mvol_divider = sc_to_play[ 0 ];
+
+  
+  while( sc_to_play[ score_pointer * 3 + 1 ] != END_PLAY )
+  {
+    
+    playNote( (uint8_t) sc_to_play[ score_pointer * 3 ],
+              sc_to_play[score_pointer * 3 + 1],
+              droprate, 1024 );
+    HAL_Delay( beat * sc_to_play[ score_pointer * 3 + 2 ] );
+
+    score_pointer++;
+  }
+}
 /* USER CODE END 4 */
 
 /**
