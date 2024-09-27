@@ -30,7 +30,7 @@
   *
   */
 //#define TEST_CYCLING_SET
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 #ifdef  DEBUG_MODE
 // Select as necessary.

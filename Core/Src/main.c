@@ -76,7 +76,7 @@ volatile    int16_t         amp1                  = 0,
                             amp3                  = 0;
 
 // Engine is either playing or has completed.  This is the flag.
-            uint8_t         playing               = 1;
+            uint8_t         playing               = 0;
 
 // DIP switch option value variable.
             uint8_t         option;
@@ -383,7 +383,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       ph3 += ph3_step;        // Increment phase accumulator for note 3
       ph3 %= WAVETABLE_SZ;
 
-      wv = (uint16_t)       // Create composite waveform, and yes, the DAC does have a signed
+      wv = (int16_t)       // Create composite waveform, and yes, the DAC does have a signed
           (                 // mode, but this code should port to other platforms too.
             ( wave[ ph1 ] * amp1 / 2048 ) 
               +
@@ -464,6 +464,7 @@ void    playNote( uint8_t ch,
 {
   uint16_t ph_step;
 
+  playing = 1;
   ph_step = freq_hz / ( SAMPLE_FREQ / WAVETABLE_SZ );
 
 #ifdef PRINT_SCORE
