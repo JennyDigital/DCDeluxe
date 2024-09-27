@@ -6,4 +6,6 @@
 *.ld
 *.ind
 *.map
+*.hzp
+*.hzs
 *cppcheck*

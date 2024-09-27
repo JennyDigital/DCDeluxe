@@ -6,7 +6,7 @@
  </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBuffer>
-  <FrameBufferWindow width="1194332224" keepAspectRatio="0" zoomToFitWindow="0" addressSpace="" format="0" height="32610" autoEvaluate="0" scaleFactor="1" refreshPeriod="0" name="DCDeluxe_DCDeluxe" addressText="" accessByDisplayWidth="0"/>
+  <FrameBufferWindow width="1194332224" keepAspectRatio="0" zoomToFitWindow="0" showGrid="0" addressSpace="" format="0" height="32610" autoEvaluate="0" scaleFactor="1" refreshPeriod="0" name="DCDeluxe_DCDeluxe" addressText="" accessByDisplayWidth="0"/>
  </FrameBuffer>
  <Memory1>
   <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="DCDeluxe_DCDeluxe" sizeText="" addressText=""/>
@@ -26,6 +26,7 @@
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Application"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Application;User"/>
   <ProjectSessionItem path="DCDeluxe;DCDeluxe;Application;User;Core"/>
+  <ProjectSessionItem path="DCDeluxe;DCDeluxe;Application;User;Core;header files"/>
   <SourceCodeControlLogin password="F9BB6682F5D56822" user="JennyDigital &lt;jennifer.a.gunn@outlook.com>"/>
  </Project>
  <Register1>
@@ -60,9 +61,10 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="146" useTextEdit="1" path="../Core/Src/main.c" left="0" top="133" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="21" y="385" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="363" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/tim.c" left="0" selected="1" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/tim.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="0" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c" autoConnectTarget="CrossConnect" buildConfiguration="DCDeluxe" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="266111"/>
 </session>
