@@ -4,7 +4,7 @@ It can literally sound however you want, but the source-code (unfinished) is pro
 
 
 
-Have you wondered why there's four DIP switched?.. Coming soon:  A melody playing feature!
+Have you wondered why there's four DIP switches?.. Coming soon:  A melody playing feature!
 
 
 
