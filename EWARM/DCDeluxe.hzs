@@ -77,7 +77,7 @@
    <Watchpoint expression="amp3" name="amp3" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="playing" name="playing" radix="-1" linenumber="0" filename="../EWARM"/>
    <Watchpoint expression="option" name="option" radix="-1" linenumber="0" filename="../EWARM"/>
-   <Watchpoint expression="peak" name="peak" radix="10" linenumber="0" filename=""/>
+   <Watchpoint expression="peak" name="peak" radix="10" linenumber="0" filename="../EWARM"/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -90,8 +90,8 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="151" useTextEdit="1" path="../Core/Src/main.c" left="0" selected="1" top="135" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="472" useTextEdit="1" path="../Core/Src/main.c" left="0" top="472" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/dac.c" left="0" top="12" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Src/tim.c" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="20" y="38" useTextEdit="1" path="../Core/Inc/configuration.h" left="0" top="18" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="3847" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c" left="0" top="3834" codecName="Default"/>
@@ -99,6 +99,8 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Inc/scores.h" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../Core/Inc/wave.h" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="388" useTextEdit="1" path="../Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c" left="0" top="366" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="38" useTextEdit="1" path="../Core/Inc/gpio.h" left="0" selected="1" top="25" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="41" useTextEdit="1" path="../Core/Src/gpio.c" left="0" top="41" codecName="Default"/>
  </Files>
  <ARMCrossStudioWindow activeProject="DCDeluxe" fileDialogDefaultFilter="*.c" autoConnectTarget="CrossConnect" buildConfiguration="THUMB Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="266111"/>
 </session>

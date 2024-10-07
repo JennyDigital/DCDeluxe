@@ -181,10 +181,9 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
-  HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2048 );
-  HAL_DAC_MspInit( &hdac1 );
+  HAL_DAC_SetValue( &hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, 2047 );
   HAL_DAC_Start( &hdac1, DAC_CHANNEL_1 );
-
+  HAL_Delay( 750 );
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -400,7 +399,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             ( (int32_t) wave[ ph2 ] * amp2 / 1024 )
               +
             ( (int32_t) wave[ ph3 ] * amp3  / 1024 )
-          ) / 4 / mvol_divider + 2048;
+          ) / 4 / mvol_divider + 2048; 
 
 #ifdef PEAK_CAPTURE
       if( wv > peak ) peak = wv;
