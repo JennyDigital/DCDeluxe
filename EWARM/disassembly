@@ -1,0 +1,179 @@
+    4A12        ldr r2, =0x20000046 <amp1>
+    8013        strh r3, [r2]
+    BDF8        pop {r3-r7, pc}
+    4B12        ldr r3, =0x20000006 <ph2_step>
+    8019        strh r1, [r3]
+    4B12        ldr r3, =0x2000004A <ph2>
+    2200        movs r2, #0
+    801A        strh r2, [r3]
+    4B11        ldr r3, =0x20000001
+    701E        strb r6, [r3]
+    B23B        sxth r3, r7
+    4A11        ldr r2, =0x20000044 <amp2>
+    8013        strh r3, [r2]
+    E7F3        b 0x080008A8
+    4B10        ldr r3, =0x20000004 <ph3_step>
+    8019        strh r1, [r3]
+    4B10        ldr r3, =0x20000048 <ph3>
+    2200        movs r2, #0
+    801A        strh r2, [r3]
+    4B10        ldr r3, =0x20000000 <__data_run_start__>
+    701E        strb r6, [r3]
+    B23B        sxth r3, r7
+    4A0F        ldr r2, =0x20000042 <amp3>
+    8013        strh r3, [r2]
+    E7E8        b 0x080008A8
+    BF00        nop
+    55555555    .word 0x55555555
+    40145855    .word 0x40145855
+    20000041    .word 0x20000041
+    20000008    .word 0x20000008
+    2000004C    .word 0x2000004C
+    20000002    .word 0x20000002
+    20000046    .word 0x20000046
+    20000006    .word 0x20000006
+    2000004A    .word 0x2000004A
+    20000001    .word 0x20000001
+    20000044    .word 0x20000044
+    20000004    .word 0x20000004
+    20000048    .word 0x20000048
+    20000000    .word 0x20000000
+    20000042    .word 0x20000042
+<playScore>
+    E92D4FF8    push.w {r3-r11, lr}
+    4606        mov r6, r0
+    6840        ldr r0, [r0, #4]
+    F001FDBB    bl 0x08002496 <__float32_to_uint32>
+    B280        uxth r0, r0
+    F64E2760    movw r7, #0xEA60
+    FBB7F7F0    udiv r7, r7, r0
+    68B0        ldr r0, [r6, #8]
+    F001FDB3    bl 0x08002496 <__float32_to_uint32>
+    FA5FF880    uxtb r8, r0
+    6832        ldr r2, [r6]
+    4B1A        ldr r3, =0x2000003C <mvol_divider>
+    601A        str r2, [r3]
+    F8D6B010    ldr.w r11, [r6, #16]
+    2100        movs r1, #0
+    4658        mov r0, r11
+    F001FFE0    bl 0x08002906 <__aeabi_fcmpeq>
+    BB40        cbnz r0, 0x0800099A
+    2401        movs r4, #1
+    250C        movs r5, #12
+    F44F6A80    mov.w r10, #0x0400
+    F04F0900    mov.w r9, #0
+    5970        ldr r0, [r6, r5]
+    F001FD9E    bl 0x08002496 <__float32_to_uint32>
+    4653        mov r3, r10
+    4642        mov r2, r8
+    4659        mov r1, r11
+    B2C0        uxtb r0, r0
+    F7FFFF7D    bl 0x08000860 <playNote>
+    4435        add r5, r6
+    4638        mov r0, r7
+    F001FD7D    bl 0x08002468 <__int32_to_float32>
+    68A9        ldr r1, [r5, #8]
+    F001FE70    bl 0x08002654 <__float32_mul>
+    F001FD8F    bl 0x08002496 <__float32_to_uint32>
+    F000F9F0    bl 0x08000D5C <HAL_Delay>
+    3401        adds r4, #1
+    B2A4        uxth r4, r4
+    EB040344    add.w r3, r4, r4, lsl #1
+    009B        lsls r3, r3, #2
+    461D        mov r5, r3
+    4433        add r3, r6
+    F8D3B004    ldr.w r11, [r3, #4]
+    4649        mov r1, r9
+    4658        mov r0, r11
+    F001FFB8    bl 0x08002906 <__aeabi_fcmpeq>
+    2800        cmp r0, #0
+    D0DC        beq 0x08000954
+    E8BD8FF8    pop.w {r3-r11, pc}
+    BF00        nop
+    2000003C    .word 0x2000003C
+<main>
+    E92D4FF8    push.w {r3-r11, lr}
+    F000F9C2    bl 0x08000D30 <HAL_Init>
+    F7FFFDB8    bl 0x08000520 <SystemClock_Config>
+    F7FFFD8A    bl 0x080004C8 <MX_GPIO_Init>
+    F7FFFD28    bl 0x08000408 <MX_DAC1_Init>
+    F000F938    bl 0x08000C2C <MX_TIM3_Init>
+    4C6F        ldr r4, =0x2000001C <hdac1>
+    F24073FF    movw r3, #0x07FF
+    2200        movs r2, #0
+    4611        mov r1, r2
+    4620        mov r0, r4
+    F000FAB6    bl 0x08000F38 <HAL_DAC_SetValue>
+    F24020EE    movw r0, #0x02EE
+    F000F9C4    bl 0x08000D5C <HAL_Delay>
+    2100        movs r1, #0
+    4620        mov r0, r4
+    F000FA62    bl 0x08000EA0 <HAL_DAC_Start>
+    4E68        ldr r6, =0x40100000
+    4D69        ldr r5, =0x4443FF6D
+    4C69        ldr r4, =0x4412D51F
+    F8DF91A8    ldr.w r9, =0x40200000
+    F8DF81A8    ldr.w r8, =0x43C3FF5C
+    4F6A        ldr r7, =0x4402D010
+    E031        b 0x08000A52
+    4B6A        ldr r3, =0x2000003C <mvol_divider>
+    601E        str r6, [r3]
+    F44F6380    mov.w r3, #0x0400
+    2202        movs r2, #2
+    4968        ldr r1, =0x4424D052
+    2001        movs r0, #1
+    F7FFFF30    bl 0x08000860 <playNote>
+    F8DFE19C    ldr.w lr, =0x20000046 <amp1>
+    F8DFC19C    ldr.w ip, =0x20000044 <amp2>
+    4867        ldr r0, =0x20000042 <amp3>
+    F8BE2000    ldrh.w r2, [lr, #0]
+    F8BC1000    ldrh.w r1, [ip, #0]
+    B209        sxth r1, r1
+    8803        ldrh r3, [r0]
+    FA01F282    sxtah r2, r1, r2
+    FA02F383    sxtah r3, r2, r3
+    2B00        cmp r3, #0
+    D1F3        bne 0x08000A0A
+    4B62        ldr r3, =0x20000041
+    2200        movs r2, #0
+    701A        strb r2, [r3]
+    F7FFFEF6    bl 0x08000818 <shiftToDACCenter>
+    F8DFB180    ldr.w r11, =0x48000400
+    F04F0A10    mov.w r10, #16
+    4651        mov r1, r10
+    4658        mov r0, r11
+    F000FC7A    bl 0x08001330 <HAL_GPIO_ReadPin>
+    2800        cmp r0, #0
+    D0F9        beq 0x08000A34
+    F000F9F6    bl 0x08000E30 <HAL_NVIC_SystemReset>
+    2300        movs r3, #0
+    4A5B        ldr r2, =0x20000048 <ph3>
+    8013        strh r3, [r2]
+    4A5B        ldr r2, =0x2000004A <ph2>
+    8013        strh r3, [r2]
+    4A5B        ldr r2, =0x2000004C <ph1>
+    8013        strh r3, [r2]
+    F7FFFEC1    bl 0x080007D8 <readOption>
+    F8DFA168    ldr.w r10, =0x20000040 <option>
+    F88A0000    strb.w r0, [r10, #0]
+    F7FFFEAF    bl 0x080007C0 <StartTimer>
+    F89A3000    ldrb.w r3, [r10, #0]
+    2B05        cmp r3, #5
+    D8CA        bhi 0x08000A00
+    A201        adr r2, 0x08000A70
+    F852F023    ldr.w pc, [r2, r3, lsl #2]
+    080009EF    .word 0x080009EF
+    08000A89    .word 0x08000A89
+    08000AB3    .word 0x08000AB3
+    08000AF3    .word 0x08000AF3
+    08000B33    .word 0x08000B33
+    08000B41    .word 0x08000B41
+    4B43        ldr r3, =0x2000003C <mvol_divider>
+    601E        str r6, [r3]
+    F44F6380    mov.w r3, #0x0400
+    2202        movs r2, #2
+    4942        ldr r1, =0x4424D052
+    2001        movs r0, #1
+    F7FFFEE3    bl 0x08000860 <playNote>
+    F44F702A    mov.w r0, #0x02A8
+    F000F95D    bl 0x08000D5C <HAL_Delay>

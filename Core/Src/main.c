@@ -242,6 +242,17 @@ int main(void)
 
       playScore( (float *) scale4 );
       break;
+
+    case 5:
+      mvol_divider = 2.25;
+
+      for( uint8_t rattle = 0; rattle < 30; rattle++ )
+      {
+        playNote( 1, nG5, 15, 1024 );
+        HAL_Delay( 70 );
+        playNote( 2, nD5, 15, 1024 );
+        HAL_Delay( 70 );
+      }
     }
     // Wait for end.
     //
@@ -462,6 +473,7 @@ uint8_t readOption( void )
     }
   }
 
+
 /** Play a note
   *
   * @param ch:        the channel to play.
@@ -506,6 +518,8 @@ void    playNote( uint8_t ch,
       droprate_ch3 = dec_rate;
       amp3 = ch_vol;
     break;
+
+    default:
   }
 }
 
